@@ -18,7 +18,15 @@ print - Prints - Example ```print test```.
 
 input - Prompts user - Example ```input test```
 
-math ##BROKEN## - Solves math equations - Example ```math 1+1```
+math ##BROKEN## - Solves math equations - Example ```math SAV 1+1```
 
 wait ##BROKEN## - Pauses (in miliseconds) - Example ```wait 5000```
 
+# How-to Command
+```print``` just... prints. If you enter mathresult into ```print```, it will get the result of the last math calculation, if you didn't do any calculations, it will return 0.
+
+```input``` prompts the user. Saving to variable is not supported yet. It is required to add a piece of text after the command.
+
+```math``` does a math calculation. If you dont add "SAV" before the math equation, it will not save it.
+
+```wait``` adds a delay before the next function. The format must be miliseconds.
