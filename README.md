@@ -15,7 +15,10 @@ Install Mono and Git by typing ```brew install mono-complete``` and ```brew inst
 
 # Commands
 print - Prints - Example ```print test```.
+
 input - Prompts user - Example ```input test```
+
 math ##BROKEN## - Solves math equations - Example ```math 1+1```
+
 wait ##BROKEN## - Pauses (in miliseconds) - Example ```wait 5000```
 
