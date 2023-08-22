@@ -16,6 +16,7 @@ namespace BASICsharp {
             bool done = false;
             bool fileopened = false;
             string openfile = "";
+            string mainopenfile = "";
             while(done == false) {
                 Console.Title = "BASIC# - Running";
                 Console.Write("BASIC#>");
@@ -109,12 +110,7 @@ namespace BASICsharp {
 								Console.Write(line.Substring(6));
 								Console.ReadLine();
 							} else if (line.StartsWith("print") && line.Length > 6) {
-								if (line.Substring(6) != "mathresult") {
-									Console.WriteLine(line.Substring(6));
-								} else {
-									Console.WriteLine(mathresult.ToString());
-									mathresult = 0;
-								}
+								Console.WriteLine(line.Substring(6));
 							} else if (line == "clear") {
 								Console.Clear();
 							} else if (line.StartsWith("wait") && line.Length > 5) {
@@ -122,13 +118,33 @@ namespace BASICsharp {
 								Thread.Sleep(waittime);
 								
 							} else if (line.StartsWith("math") && line.Length > 5) {
-								if (line.Substring(6) != "SAV") {
-									int.Parse(line.Substring(6));
-								} else {
+								if (line.Substring(6) == "SAV") {
 									mathresult = int.Parse(line.Substring(9));
+								} else if (line.Substring(6) == "PRT"){
+									Console.WriteLine(line);
+									Console.WriteLine(int.Parse(line.Substring(9)).ToString());
+								} else {
+									int.Parse(line.Substring(9));
+								}
+							} else if (line.StartsWith("load") && line.Length > 5) {
+								string filetoload = line.Substring(6);
+								if (File.Exists(@"./" + filetoload.ToUpper() + ".bsharp")) {
+									mainopenfile = openfile;
+									openfile = @"./" + filetoload.ToUpper() + ".bsharp";
+								} else {
+									Console.WriteLine("Error: file not found. (3). Halting.");
+									break;
+								}
+							} else if (line == "endload") {
+								if (mainopenfile == "") {
+									Console.WriteLine("This program is not a subprogram, so it cannot exit substate.");
+								} else {
+									openfile = mainopenfile;
+									mainopenfile = "";
 								}
 							} else {
-								Console.WriteLine("Error: command on line #" + linenum.ToString() + " not recognized.");
+								Console.WriteLine("Error: command on line #" + linenum.ToString() + " not recognized (2). Halting.");
+								break;
 							}
 						}
 					} else {
