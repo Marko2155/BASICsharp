@@ -114,8 +114,8 @@ namespace BASICsharp {
 							} else if (line == "clear") {
 								Console.Clear();
 							} else if (line.StartsWith("wait") && line.Length > 5) {
-								int waittime = int.Parse(line.Substring(6));
-								Thread.Sleep(waittime);
+								int waittime = int.Parse(line.Substring(5));
+								Thread.Sleep(waittime * 1000);
 								
 							} else if (line.StartsWith("math") && line.Length > 5) {
 								if (line.Substring(6) == "SAV") {
