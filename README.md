@@ -25,7 +25,7 @@ clear - Clears screen - Example ```clear```
 
 math ##BROKEN## - Solves math equations - Example ```math SAV 1+1```
 
-wait ##BROKEN## - Pauses (in miliseconds) - Example ```wait 5000```
+wait - Pauses - Example ```wait 5```
 
 load + endload ##BROKEN## - ```load``` loads a program and ```endload``` ends the load-open session. - Example x2 -TEST1.bsharp ```load test2``` - TEST2.bsharp ```endload```
 
