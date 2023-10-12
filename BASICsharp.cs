@@ -13,6 +13,7 @@ namespace BASICsharp {
             Console.Read();
             Console.Clear();
             int mathresult = 0;
+			string inputresult = "";
             bool done = false;
             bool fileopened = false;
             string openfile = "";
@@ -105,12 +106,16 @@ namespace BASICsharp {
 						int linenum = 1;
 						foreach (string line in contents) {
 							linenum += 1;
-							if (line.StartsWith("input") && line.Length > 6) {
-								Console.Write(line.Substring(6));
-								Console.ReadLine();
+							if (line.StartsWith("input") && line.Length > 5) {
+								Console.Write(line.Substring(6) + "> ");
+								inputresult = Console.ReadLine();
 							} else if (line.StartsWith("print") && line.Length > 6) {
 								if (line.Substring(6) != "mathresult") {
-									Console.WriteLine(line.Substring(6));
+									if (line.Substring(6) != "inputresult") {
+										Console.WriteLine(line.Substring(6).ToString());
+									} else {
+										Console.WriteLine(inputresult);
+									}
 								} else {
 									Console.WriteLine(mathresult.ToString());
 									mathresult = 0;
