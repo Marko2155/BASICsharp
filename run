@@ -1,0 +1,2 @@
+mcs BASICsharp.cs
+mono BASICsharp.exe
