@@ -2,7 +2,7 @@
 BASIC# (had to remove the # from title because of GitHub) is a program where you can write and run code in a BASIC-like programming language called C#ASIC (pronounced CBASIC).
 
 # ---WARNING---
-This branch is only used for development purposes, as it has unfinished+broken commands. This branch is used for transfering from one collaborator to another. Any code submitted here must never be built by consumers, only collaborators.
+This branch is only used for development purposes, as it might have unfinished+broken commands. This branch is used for transfering from one collaborator to another. Any code submitted here must never be built by consumers, only collaborators.
 
 # How it works
 C#BASIC is not a real language, it is written all in software to point to standard C# functions (hence the name C#ASIC). C#BASIC will halt if it finds a command that is not programmed in yet.
@@ -23,21 +23,17 @@ input - Prompts user - Example ```input test```
 
 clear - Clears screen - Example ```clear``` 
 
-math ##BROKEN## - Solves math equations - Example ```math SAV 1+1```
+math  - Solves math equations - Example ```math 1+1```
 
 wait - Pauses - Example ```wait 5```
-
-load + endload ##BROKEN## - ```load``` loads a program and ```endload``` ends the load-open session. - Example x2 -TEST1.bsharp ```load test2``` - TEST2.bsharp ```endload```
 
 # How-to Command
 ```print``` just... prints. If you enter mathresult into ```print```, it will get the result of the last math calculation, if you didn't do any calculations, it will return 0.
 
-```input``` prompts the user. Saving to variable is not supported yet. It is required to add a piece of text after the command.
+```input``` prompts the user. Required to add string after ```input```. Saves to variable. If you want to see the user input, just type ```print !inputresult!```.
 
-```math``` does a math calculation. Must add option (either "SAV" (all uppercase, stands for "save") or "PRT" (all uppercase, stands for "print")) or else error.
+```math``` does a math calculation. Just do something like ```math 1+1``` and ```print !mathresult!``` and it should print 2.
 
-```wait``` adds a delay before the next function. The format must be miliseconds.
+```wait``` adds a delay before the next function. The format must be seconds.
 
 ```clear``` clears the screen.
-
-```load``` + ```endload``` - ```load``` loads a program and ```endload``` ends the load-open session. Make sure to add ```endload``` at the end of the file you loaded or else when you type ```com``` to add a command it'll write to the program loaded by ```load```, not the program you opened by using ```open``` or ```new```!
