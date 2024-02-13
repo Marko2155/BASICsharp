@@ -5,6 +5,33 @@ using System.Threading;
 
 namespace BASICsharp {
     public class BASICsharp {
+		static double EvaluateExpression(string expression)
+    	{
+        	char[] separators = { '+', '-', '*', '/' };
+        	string[] parts = expression.Split(separators);
+
+        	double operand1 = Convert.ToDouble(parts[0].Trim());
+        	double operand2 = Convert.ToDouble(parts[1].Trim());
+        	char operation = expression[parts[0].Length];
+
+        	switch (operation)
+        	{
+        	    case '+':
+        	        return operand1 + operand2;
+        	    case '-':
+        	        return operand1 - operand2;
+        	    case '*':
+        	        return operand1 * operand2;
+        	    case '/':
+        	        if (operand2 == 0)
+        	        {
+        	            throw new DivideByZeroException("Cannot divide by zero.");
+        	        }
+        	        return operand1 / operand2;
+        	    default:
+        	        throw new ArgumentException("Invalid operation.");
+        	}
+    }
         public static void Main(string[] args) {
             Console.Clear();
             Console.Title = "BASIC# - Idle";
@@ -12,10 +39,10 @@ namespace BASICsharp {
             Console.WriteLine("Press any key to start");
             Console.Read();
             Console.Clear();
-            int mathresult = 0;
-			string inputresult = "";
+            double mathresult = 0;
             bool done = false;
             bool fileopened = false;
+			string inputresult = "";
             string openfile = "";
             while(done == false) {
                 Console.Title = "BASIC# - Running";
@@ -28,7 +55,7 @@ namespace BASICsharp {
                     Console.WriteLine("com - Writes a command to open file");
                     Console.WriteLine("end - Ends file editing");
                     Console.WriteLine("list - Shows all lines of code in open file");
-                    Console.WriteLine("listdir - Lists all programs (with proprietary .bsharp extension)");
+                    Console.WriteLine("ls - Lists all programs (with proprietary .bsharp extension)");
                     Console.WriteLine("del - Deletes a program.");
                     Console.WriteLine("open - Just like new, but instead of creating a file it just opens it (hence the name).");
                     Console.WriteLine("exit - Exits BASIC#");
@@ -74,7 +101,7 @@ namespace BASICsharp {
 						Console.WriteLine("argument <COMMAND> must not be empty");
 					}
 					}
-				} else if (basicsharpinput == "listdir") {
+				} else if (basicsharpinput == "ls") {
 					string[] dir = Directory.GetFiles(".");
 					foreach (string file in dir) {
 						if (file.EndsWith(".bsharp")) {
@@ -106,34 +133,30 @@ namespace BASICsharp {
 						int linenum = 1;
 						foreach (string line in contents) {
 							linenum += 1;
-							if (line.StartsWith("input") && line.Length > 5) {
+							if (line.StartsWith("input") && line.Length > 6) {
 								Console.Write(line.Substring(6) + "> ");
 								inputresult = Console.ReadLine();
 							} else if (line.StartsWith("print") && line.Length > 6) {
-								if (line.Substring(6) != "mathresult") {
-									if (line.Substring(6) != "inputresult") {
-										Console.WriteLine(line.Substring(6).ToString());
-									} else {
-										Console.WriteLine(inputresult);
-									}
+								if (line.Substring(6) == "!inputresult!") {
+									Console.WriteLine(inputresult);
+								} else if (line.Substring(6) == "!mathresult!") {
+									Console.WriteLine(mathresult);
 								} else {
-									Console.WriteLine(mathresult.ToString());
-									mathresult = 0;
+									Console.WriteLine(line.Substring(6));
 								}
 							} else if (line == "clear") {
 								Console.Clear();
 							} else if (line.StartsWith("wait") && line.Length > 5) {
 								int waittime = int.Parse(line.Substring(5));
 								Thread.Sleep(waittime * 1000);
-								
 							} else if (line.StartsWith("math") && line.Length > 5) {
-								if (line.Substring(6) != "SAV") {
-									int.Parse(line.Substring(6));
-								} else {
-									mathresult = int.Parse(line.Substring(9));
-								}
+								double equation = 0;
+								equation = EvaluateExpression(line.Substring(5));
+								
+								mathresult = equation;
 							} else {
-								Console.WriteLine("Error: command on line #" + linenum.ToString() + " not recognized.");
+								Console.WriteLine("Error: command on line #" + linenum.ToString() + " not recognized or has missing parameters (2). Halting.");
+								break;
 							}
 						}
 					} else {
@@ -154,8 +177,12 @@ namespace BASICsharp {
                     if (name == "") {
                         Console.WriteLine("argument 'FILE' must not be empty");
                     } else {
-                        openfile = name;
-                        fileopened = true;
+						if (File.Exists("./" + name + ".bsharp")) {
+                        	openfile = name;
+                        	fileopened = true;
+						} else {
+							Console.WriteLine("argument <FILE> does not exist");
+						}
                     }
 				} else if (basicsharpinput == "clear") {
 					Console.Clear();
