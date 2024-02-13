@@ -20,23 +20,17 @@ input - Prompts user - Example ```input test```
 
 clear - Clears screen - Example ```clear``` 
 
-math ##BROKEN## - Solves math equations - Example ```math SAV 1+1```
+math  - Solves math equations - Example ```math 1+1```
 
-wait ##BROKEN## - Pauses (in miliseconds) - Example ```wait 5000```
+wait - Pauses - Example ```wait 5```
 
 # How-to Command
-## BASIC# 1.0 Commands
 ```print``` just... prints. If you enter mathresult into ```print```, it will get the result of the last math calculation, if you didn't do any calculations, it will return 0.
 
-```input``` prompts the user. Saving to variable is not supported yet. It is required to add a piece of text after the command.
+```input``` prompts the user. Required to add string after ```input```. Saves to variable. If you want to see the user input, just type ```print !inputresult!```.
 
-```math``` does a math calculation. Must add option (either "SAV" (all uppercase, stands for "save") or "PRT" (all uppercase, stands for "print")) or else error.
+```math``` does a math calculation. Just do something like ```math 1+1``` and ```print !mathresult!``` and it should print 2.
 
-```wait``` adds a delay before the next function. The format must be miliseconds.
+```wait``` adds a delay before the next function. The format must be seconds.
 
 ```clear``` clears the screen.
-
-## BASIC# 1.1 Commands
-```print``` just... prints. If you enter mathresult into ```print```, it will get the result of the last math calculation, if you didn't do any calculations, it will return 0. If you enter inputresult into ```print```, it will get the result of the last piece of user input, if you didn't do any user input, it will return a space/null.
-
-```input``` prompts the user. Saving to variable is now supported. It is (still) required to add a piece of text after the command.
