@@ -1,4 +1,4 @@
-BASICsharp
+# BASICsharp
 BASIC# (had to remove the # from title because of GitHub) is a program where you can write and run code in a BASIC-like programming language called C#ASIC (pronounced CBASIC).
 
 # How it works
