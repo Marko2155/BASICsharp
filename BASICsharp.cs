@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using System.Linq;
 
 namespace BASICsharp {
     public class BASICsharp {
@@ -40,6 +41,7 @@ namespace BASICsharp {
             Console.Read();
             Console.Clear();
             double mathresult = 0;
+			string[] memory = {"", "", "", "", "", "", "", "", "", ""};
             bool done = false;
             bool fileopened = false;
 			string inputresult = "";
@@ -135,10 +137,14 @@ namespace BASICsharp {
 						string[] contents = File.ReadAllLines("./" + openfile.ToUpper() + ".cb");
 						int linenum = 1;
 						foreach (string line in contents) {
-							linenum += 1;
 							if (line.StartsWith("input")) {
 								if (line.Length > 6) {
-									Console.Write(line.Substring(6) + "> ");
+									if (line.Substring(6).StartsWith("$")) {
+										int index = int.Parse(line.Substring(7, 2));
+										Console.Write(memory[index] + "> ");
+									} else {
+										Console.Write(line.Substring(6) + "> ");
+									}
 								} else {
 									Console.WriteLine("input>");
 								}
@@ -148,62 +154,48 @@ namespace BASICsharp {
 									Console.WriteLine(inputresult);
 								} else if (line.Substring(6) == "!mathresult!") {
 									Console.WriteLine(mathresult);
+								} else if (line.Substring(6).StartsWith("$")) {
+									int index = int.Parse(line.Substring(7, 2));
+									if (index <= 10 && index >= 1) {
+										Console.WriteLine(memory[index]);
+									}
 								} else {
 									Console.WriteLine(line.Substring(6));
 								}
 							} else if (line == "clear") {
 								Console.Clear();
 							} else if (line.StartsWith("wait") && line.Length > 5) {
-								int waittime = int.Parse(line.Substring(5));
+								int waittime;
+								if (line.Substring(5).StartsWith("$")) { 
+									int index = int.Parse(line.Substring(6, 2));
+									waittime = int.Parse(memory[index]);
+								} else {
+									waittime = int.Parse(line.Substring(5));
+								}
 								Thread.Sleep(waittime * 1000);
 							} else if (line.StartsWith("math") && line.Length > 5) {
 								double equation = 0;
-								equation = EvaluateExpression(line.Substring(5));
-								
+								int index = int.Parse(line.Substring(6, 2));
+								equation = EvaluateExpression(memory[index]);
 								mathresult = equation;
 							} else if (line.StartsWith("--")) {
 								continue;
-							} else if (line.StartsWith("loop") && line.Length > 8) {
-								int amount = int.Parse(line.Substring(5, 3));
-								string command = line.Substring(9);
-								for (int i = 0; i < amount; i++) {
-
-																if (command.StartsWith("input")) {
-								if (command.Length > 6) {
-									Console.Write(command.Substring(6) + "> ");
-								} else {
-									Console.WriteLine("input>");
-								}
-								inputresult = Console.ReadLine();
-							} else if (command.StartsWith("print") && command.Length > 6) {
-								if (command.Substring(6) == "!inputresult!") {
-									Console.WriteLine(inputresult);
-								} else if (command.Substring(6) == "!mathresult!") {
-									Console.WriteLine(mathresult);
-								} else {
-									Console.WriteLine(command.Substring(6));
-								}
-							} else if (command == "clear") {
-								Console.Clear();
-							} else if (command.StartsWith("wait") && command.Length > 5) {
-								int waittime = int.Parse(line.Substring(5));
-								Thread.Sleep(waittime * 1000);
-							} else if (command.StartsWith("math") && command.Length > 5) {
-								double equation = 0;
-								equation = EvaluateExpression(command.Substring(5));
-								
-								mathresult = equation;
-							} else if (command.StartsWith("--")) {
-								continue;
-							} else {
-								Console.WriteLine("Error: command on line #" + linenum.ToString() + " not recognized or is incomplete (2). Halting.");
-								break;
-							}
+							} else if (line.StartsWith("$") && line.Length >= 3) {
+								if (line.Length == 3 && line.Length < 4) {
+									int index = int.Parse(line.Substring(1, 2));
+									if (index <= 10 && index >= 1) {
+										Console.WriteLine(memory[index]);
+									}
+								} else if (line.Length >= 4) {
+									int index = int.Parse(line.Substring(1,2));
+									string value = line.Substring(4);
+									memory[index] = value;
 								}
 							} else {
 								Console.WriteLine("Error: command on line #" + linenum.ToString() + " not recognized or is incomplete (2). Halting.");
 								break;
 							}
+							linenum += 1;
 						}
 					} else {
 						Console.WriteLine("No currently open file");
@@ -232,6 +224,17 @@ namespace BASICsharp {
                     }
 				} else if (basicsharpinput == "clear") {
 					Console.Clear();
+				} else if (basicsharpinput.StartsWith("$") && basicsharpinput.Length >= 3) {
+								if (basicsharpinput.Length == 3) {
+									int index = int.Parse(basicsharpinput.Substring(1, 2));
+									if (index <= 10 && index >= 1) {
+										Console.WriteLine(memory[index]);
+									}
+								} else if (basicsharpinput.Length >= 4 && basicsharpinput.Substring(3,1) == "=") {
+									int index = int.Parse(basicsharpinput.Substring(1,2));
+									string value = basicsharpinput.Substring(4);
+									memory[index] = value;
+								}
 				} else {
 					Console.WriteLine("Error: command '" + basicsharpinput + "' not recognized (1).");
 				}
