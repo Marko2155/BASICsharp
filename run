@@ -1,1 +1,2 @@
-mono BASICsharp.exe
+mcs cb.cs >/dev/null
+mono cb.exe
